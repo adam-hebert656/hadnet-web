@@ -4,6 +4,15 @@
       <h1 class="display-4">Business Listings</h1>
     </div>
   </div>
+<div class='row'>
+  <div class='col'>
+    <form class="form-inline" (ngSubmit)="onSubmit()">
+      <input class="border border-dark w-75" type="text" name="title" [(ngModel)]="title" placeholder="Search...">
+      <input type="submit" value="Search" class="btn btn-dark btn-sm">
+    </form>
+  </div>
+</div>
+  <hr>
   <div class="row">
     <div class="col">
       <ul *ngFor="let businessListing of businessListings" class="list-group">

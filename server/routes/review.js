@@ -1,28 +1,28 @@
 const router = require('express').Router();
 const { db } = require('../../database/index');
+const { 
+  addReview,
+  getUserById,
+  getReviewsByBusiness,
+} = require('../../database/helpers')
 
-const { reviews } = require('../../database/mock-reviews');
+//const { reviews } = require('../../database/mock-reviews');
 
 router.get('/business/:id', (req, res) => {
-  // if(req.params.id){
-  //   const businessId = parseInt(req.params.id);
-  // } commenting out for now to hardcode id of 1
-  const businessId = 1;
-    /****************TODO****************
-   * get reviews for specific business
-   */
-  console.log(`Grabbing all reviews for business id: ${businessId}`)
-  const businessReviews = reviews.filter((review) => {
-    return (review.idBusiness === businessId);
-  });
-  console.log(businessReviews)
-  res.send(businessReviews);
+  const id = req.params.id;
+  getReviewsByBusiness(id)
+    .then((reviews) => {
+      res.send(reviews);
+    }).catch((err) => {
+      res.sendStatus(404);
+    });
+  
 });
 
 router.get('/user/:id', (req,res) => {
   const userId = parseInt(req.params.id);
 
-    /****************TODO****************
+  /****************TODO****************
    * get reviews for specific user
    */
   console.log(`Grabbing all reviews for user id: ${userId}`);
@@ -33,7 +33,23 @@ router.get('/user/:id', (req,res) => {
 })
 
 router.post('/', (req, res) => {
+  console.log('hit');
   const review = req.body;
+  const { idUser } = review;
+  getUserById(idUser)
+    .then((user) => {
+      const reviewObj = {
+        text: review.text,
+        ratingNumber: review.ratingNumber,
+        idBusiness: review.idBusiness,
+        idUser: user.id,
+      };
+      addReview(reviewObj)
+        .then((result) => {
+          console.log('review added to db')
+          res.send('entered into db');
+        });
+    });
 
   /****************TODO****************
    * add review to specified business

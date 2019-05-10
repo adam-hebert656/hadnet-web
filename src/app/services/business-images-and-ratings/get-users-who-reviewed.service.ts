@@ -10,7 +10,7 @@ export class GetUsersWhoReviewedService {
   userRatingsEndpoint = '/api/user/';
   constructor(private http: HttpClient) { }
 
-  getUsersWhoReviewed(id: number): Observable<User[]> {
-    return this.http.get<User[]>(this.userRatingsEndpoint.concat(`${id}`));
+  getUsersWhoReviewed(id: number): Observable<User> {
+    return this.http.get<User>(this.userRatingsEndpoint.concat(`${id}`));
 }
 }

@@ -9,13 +9,13 @@ const {
   Image,
 } = require('./index.js');
 
+
 // Add business to database
 const addBusiness = businessObj => Business.create(businessObj)
   .then((result) => {
     console.log('entered business into db');
     return result;
-
-})
+  })
   .catch((err) => {
     console.log(err);
   });
@@ -67,17 +67,20 @@ const getBusinessById = id => Business.findOne({
 // get business by user id
 
 const getBusinessByUser = (userId) => {
-  return Business.findOne({
+  Business.findOne({
     where: {
       idUser: userId,
     },
-  });
+  })
+    .then(result => result)
+    .catch((err) => {
+      console.log(err);
+    });
 };
-
 
 // Add user to database
 const addUser = userObj => User.create(userObj)
-.then((result) => {
+  .then((result) => {
     console.log('entered user into db');
     return result;
   })
@@ -85,20 +88,31 @@ const addUser = userObj => User.create(userObj)
     console.log(err);
   });
   
+
 // Get user by firebase id
 const getUserById = id => User.findOne({
   where: {
     firebaseId: id,
   },
 }).then(user => user)
-.catch((err) => {
-  console.log(err);
-});
+  .catch((err) => {
+    console.log(err);
+  });
 
-const getBusinessByFirebaseId = (uid) => {
-  return getUserById(uid)
-    .then(result => getBusinessByUser(result.id));
-};
+const getBusinessByFirebaseId = uid => getUserById(uid)
+  .then((result) => {
+    return getBusinessByUser(result.id);
+  })
+
+
+const getUserByUserId = id => User.findOne({
+  where: {
+    id: id,
+  },
+}).then(user => user)
+  .catch((err) => {
+    console.log(err);
+  });
 
 // add review
 const addReview = reviewObj => Review.create(reviewObj)
@@ -145,6 +159,7 @@ module.exports = {
   getBusinessByUser,
   addUser,
   getUserById,
+  getUserByUserId,
   addReview,
   getReviewsByBusiness,
   getFeaturedImage,

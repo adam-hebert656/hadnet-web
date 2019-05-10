@@ -12,7 +12,7 @@
             (initError)="handleInitError($event)"
     ></webcam>
     <br/>
-    <button class="actionBtn" (click)="triggerSnapshot();">Take A Snapshot of Business</button>
+    <button class="actionBtn" *ngIf="showWebcam" (click)="triggerSnapshot();">Take A Snapshot of Business</button>
     <!-- <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button> -->
     <br/>
     <!-- <button class="actionBtn" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Next Webcam</button> -->
@@ -21,7 +21,6 @@
     <!-- DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px"> -->
     <!-- <button (click)="showNextWebcam(deviceId);">Activate</button> -->
   </div>
-
   <div class="spinner-border mt-3" *ngIf="loading" role="status">
     <span class="sr-only">Loading...</span>
   </div>
@@ -31,6 +30,21 @@
 <!-- <div class="snapshot" *ngIf="webcamImage">
   <img [src]="webcamImage.imageAsDataUrl"/>
 </div> -->
+<div class="container" *ngIf="showBusinessSummary">
+   <p>{{ business.name }}<br>
+      {{ business.address}}<br>
+      {{ business.email }}
+   </p>
+  <span class="row">
+    <div class="col-sm">
+      is this the business you'd like to visit?
+    </div>
+    <div class="col-sm">
+      <a routerLink="/business-profile"><button (click)="changeBusinessProfile(business);">yes</button></a> <button (click)="returnToCameraView()">nope</button>
+    </div>
+  </span>
+
+</div>
 
 <h4 *ngIf="errors.length > 0">Messages:</h4>
 <ul *ngFor="let error of errors">

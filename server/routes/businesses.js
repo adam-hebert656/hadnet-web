@@ -1,3 +1,4 @@
+require('dotenv').config();
 const router = require('express').Router();
 const axios = require('axios');
 const { getAllBusinessesFromText, getAllBusinesses, getBusinessByUser, setBusinessOwner, getUserById, getBusinessByFirebaseId } = require('../../database/helpers');
@@ -52,6 +53,58 @@ router.get('/:id', (req, res) => {
   }
 });
 
+router.get('/search/:query', (req, res) => {
+  const { query } = req.params;
+  console.log(query);
+  let origArray;
+  let uppArray;
+  let lowArray;
+  let capArray;
+  let decapArray;
+  let queryArray;
+  if (query.includes(' ')) {
+    origArray = query.split(' ').map((queryWord) => {
+      return `%${queryWord}%`;
+    });
+    origArray.push(`%${query}%`);
+
+    uppArray = query.split(' ').map((uppWord) => {
+      return `%${uppWord.toUpperCase()}%`;
+    });
+    uppArray.push(`%${query.toUpperCase()}%`);
+
+    capArray = query.split(' ').map((capWord) => {
+      return `%${capWord.charAt(0).toUpperCase()}${capWord.slice(1)}%`;
+    });
+    capArray.push(`%${query.charAt(0).toUpperCase()}${query.slice(1)}%`);
+
+    decapArray = query.split(' ').map((decapWord) => {
+      return `%${decapWord.charAt(0)}${decapWord.slice(1).toLowerCase()}%`;
+    });
+    decapArray.push(`%${query.charAt(0)}${query.slice(1).toLowerCase()}%`);
+
+    lowArray = query.split(' ').map((lowWord) => {
+      return `%${lowWord.toLowerCase()}%`;
+    });
+    lowArray.push(`%${query.toLowerCase()}%`);
+    queryArray = origArray.concat(uppArray).concat(lowArray).concat(capArray).concat(decapArray);
+  } else {
+    queryArray = [`%${query}%`];
+    queryArray.push(`%${query.toLowerCase()}%`);
+    queryArray.push(`%${query.toUpperCase()}%`);
+    queryArray.push(`%${query.charAt(0).toUpperCase()}${query.slice(1)}%`);
+    queryArray.push(`%${query.charAt(0)}${query.slice(1).toLowerCase()}%`);
+  }
+  getAllBusinessesFromText(queryArray)
+    .then((businessesArray) => {
+      res.send(businessesArray);
+      console.log(businessesArray);
+    })
+    .catch((error) => {
+      res.send('no matches founc');
+      console.error(error);
+    })
+})
 
 // adds business
 router.post('/', (req, res) => {

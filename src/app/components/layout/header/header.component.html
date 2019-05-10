@@ -4,6 +4,7 @@
       <a routerLink="/business-listings"><i class="fas fa-list"></i></a>
       <a routerLink="/isThisBlackOwned"><i class="fas fa-eye"></i></a>
       <a *ngIf="authService.hasBusiness()" (click)="profileService.changeProfile(authService.currentUsersBusiness)" routerLink="/business-profile"><i class="fas fa-address-card"></i></a>
+      <a routerLink="/communityBoard"><i class="fas fa-users"></i></a>
       <a *ngIf="!authService.isLoggedIn" routerLink="/login"><i class="fas fa-sign-in-alt"></i></a>
       <a *ngIf="authService.isLoggedIn" routerLink="" (click)="authService.logout()"><i class="fas fa-sign-out-alt"></i></a>
     </nav>

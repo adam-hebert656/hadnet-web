@@ -25,6 +25,7 @@ import { HomeSelectedBusinessComponent } from './components/home-selected-busine
 import { BusinessProfileComponent } from './components/business-profile/business-profile.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { RatingsItemComponent } from './components/ratings-item/ratings-item.component';
+import { CommunityBoardComponent } from './components/community-board/community-board.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { RatingsItemComponent } from './components/ratings-item/ratings-item.com
     MapViewComponent,
     BusinessProfileComponent,
     RatingsComponent,
-    RatingsItemComponent
+    RatingsItemComponent,
+    CommunityBoardComponent
   ],
   imports: [
     BrowserModule,

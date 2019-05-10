@@ -1,23 +1,27 @@
-const express = require('express');
 require('dotenv').config();
+
+const express = require('express');
+
 const app = express();
+
 const bodyParser = require('body-parser');
-const { db } = require('../database/index');
+
 const port = process.env.PORT || 3000;
 const path = require('path');
+const { db } = require('../database/index');
 
-//routers
+// routers
 const auth = require('./routes/auth');
 const businesses = require('./routes/businesses');
 const community = require('./routes/community');
 const user = require('./routes/user.js');
 const review = require('./routes/review.js');
-const image = require('./routes/image.js')
-const sam = require('./routes/sam.js')
+const image = require('./routes/image.js');
+const sam = require('./routes/sam.js');
 
-//middleware
-app.use(bodyParser.json({limit: '10mb', extended: true}));
-//app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+// middleware
+app.use(bodyParser.json({ limit: '10mb', extended: true }));
+// app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 app.use(express.static(path.join(__dirname, '../dist/hadnet')));
 
 // authentication route
